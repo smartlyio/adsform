@@ -12,7 +12,7 @@ from wtforms.validators import URL, DataRequired, Email, EqualTo, Length
 
 
 class ContactForm(FlaskForm):
-    """Contact form."""
+    """Ad Creation form."""
 
     name = StringField("Name", [DataRequired()])
     email = StringField(

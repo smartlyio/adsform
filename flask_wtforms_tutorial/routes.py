@@ -11,7 +11,7 @@ def home():
     return render_template(
         "index.jinja2",
         template="home-template",
-        title="Flask-WTF tutorial"
+        title="Ad Creator Form App"
     )
 
 
@@ -40,6 +40,15 @@ def signup():
         form=form,
         template="form-template",
         title="Signup Form"
+    )
+
+@app.route("/comingsoon", methods=["GET", "POST"])
+def comingsoon():
+    """Coming soon page."""
+    return render_template(
+        "comingsoon.jinja2",
+        template="form-template",
+        title="Page coming soon"
     )
 
 

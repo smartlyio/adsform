@@ -17,6 +17,14 @@ $ cd flask-wtform-tutorial
 $ make deploy
 ``` 
 
+OR 
+
+```shell
+$ python3 -m venv .venv
+$ . .venv/bin/activate 
+$ flask run
+``` 
+
 ### Environment Variables
 
 Replace the values in **.env.example** with your values and rename this file to **.env**:
