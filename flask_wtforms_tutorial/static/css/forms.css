@@ -32,7 +32,7 @@ form {
 
 .form-wrapper {
   background: white;
-  width: 350px;
+  width: 850px;
   box-shadow: 0 0 5px rgba(65, 67, 144, 0.1);
   padding: 40px;
 }
@@ -155,4 +155,8 @@ i {
 
 .g-recaptcha div {
   margin: auto;
+}
+
+.fa-caret-down {
+  visibility: hidden;
 }
