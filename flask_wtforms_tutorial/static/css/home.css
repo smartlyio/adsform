@@ -8,11 +8,12 @@
   text-transform: uppercase;
   margin-bottom: 10px;
   display: block;
-  color: #3979a4;
+  color: #fbfbfb;
 }
 
 .home-template h1 {
   margin-bottom: 30px;
+  color:#fbfbfb;
 }
 
 .home-template i {
