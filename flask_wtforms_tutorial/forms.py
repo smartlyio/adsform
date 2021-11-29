@@ -9,11 +9,28 @@ from wtforms import (
     TextAreaField,
 )
 from wtforms.validators import URL, DataRequired, Email, EqualTo, Length
+import json
 
+class AdForm(FlaskForm):
+    """Ad Creation form."""
+    
+    name = StringField("Name", [DataRequired()])
+    # form_name = HiddenField('Form Name')
+    state = SelectField('State:', validators=[DataRequired()], id='select_state')
+    county = SelectField('County:', validators=[DataRequired()], id='select_county')
+    submit = SubmitField('Select County!')
 
 class ContactForm(FlaskForm):
-    """Ad Creation form."""
+    with open('countries_cities.json') as fp: # todo migrate to a db once app is launched
+        data = json.load(fp)
+        countries = list(data.keys())
+        cities = list(data.values())
+        # countries.sort()
+        # cities.sort()
 
+    """Contact form."""
+    country = SelectField("country", [DataRequired()], choices=[countries])
+    city = SelectField("city", [DataRequired()], choices=[cities])
     name = StringField("Name", [DataRequired()])
     email = StringField(
         "Email",

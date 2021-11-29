@@ -9,11 +9,36 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="form-wrapper">
-      <h2 class="title">Contact</h2>
+      <h2 class="title">Ad Creator</h2>
       <form method="POST" action="{{ url_for('contact') }}">
         {{ form.csrf_token }}
+
+       <fieldset class="form-field">{{ form.country.label }} {{ form.country }}
+          <i class="fas fa-caret-down"></i>
+          {% if form.country.errors %}
+            <ul class="errors">
+              {% for error in form.country.errors %}
+                <li class="error">
+                    <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </fieldset>
+
+       <fieldset class="form-field">{{ form.city.label }} {{ form.city }}
+          <i class="fas fa-caret-down"></i>
+          {% if form.country.errors %}
+            <ul class="errors">
+              {% for error in form.country.errors %}
+                <li class="error">
+                    <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </fieldset>
 
         <fieldset class="form-field">{{ form.name.label }} {{ form.name(size=20) }}
           {% if form.name.errors %}
@@ -55,4 +80,11 @@
       </form>
     </div>
 
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        alert("YO")
+    </script>
+    <!-- The contents of myscript.js will be loaded inside the script tag -->
 {% endblock %}
