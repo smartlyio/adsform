@@ -40,10 +40,23 @@
           {% endif %}
         </fieldset>
 
-        <fieldset class="form-field">{{ form.name.label }} {{ form.name(size=20) }}
-          {% if form.name.errors %}
+        <fieldset class="form-field">{{ form.language.label }} {{ form.language }}
+          <i class="fas fa-caret-down"></i>
+          {% if form.language.errors %}
             <ul class="errors">
-                {% for error in form.email.errors %}
+              {% for error in form.language.errors %}
+                <li class="error">
+                    <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </fieldset>
+
+        <fieldset class="form-field">{{ form.adtitle.label }} {{ form.adtitle(size=25) }}
+          {% if form.adtitle.errors %}
+            <ul class="errors">
+                {% for error in form.adtitle.errors %}
                   <li class="error">
                       <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
                   </li>
@@ -52,10 +65,10 @@
           {% endif %}
         </fieldset>
 
-        <fieldset class="form-field">{{ form.email.label }} {{ form.email }}
-          {% if form.email.errors %}
+        <fieldset class="form-field">{{ form.adcopy.label }} {{ form.adcopy(size=125) }}
+          {% if form.adcopy.errors %}
             <ul class="errors">
-                {% for error in form.email.errors %}
+                {% for error in form.adcopy.errors %}
                   <li class="error">
                       <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
                   </li>
@@ -64,15 +77,103 @@
           {% endif %}
         </fieldset>
 
-        <fieldset class="form-field">{{ form.body.label }} {{ form.body }}
-          {% if form.body.errors %}
+        <fieldset class="form-field">{{ form.calltoaction.label }} {{ form.calltoaction }}
+          <i class="fas fa-caret-down"></i>
+          {% if form.calltoaction.errors %}
             <ul class="errors">
-                {% for error in form.email.errors %}
+              {% for error in form.calltoaction.errors %}
+                <li class="error">
+                    <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </fieldset>
+
+        <fieldset class="form-field">{{ form.startdate.label }} {{ form.startdate }}
+            {% if form.startdate.errors %}
+              <ul class="errors">
+                {% for error in form.startdate.errors %}
                   <li class="error">
                       <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
                   </li>
                 {% endfor %}
               </ul>
+            {% endif %}
+          </fieldset>
+
+        <fieldset class="form-field">{{ form.enddate.label }} {{ form.enddate }}
+          {% if form.enddate.errors %}
+            <ul class="errors">
+              {% for error in form.enddate.errors %}
+                <li class="error">
+                    <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </fieldset>
+
+        <fieldset class="form-field">{{ form.creativetype.label }} {{ form.creativetype }}
+          <i class="fas fa-caret-down"></i>
+          {% if form.creativetype.errors %}
+            <ul class="errors">
+              {% for error in form.creativetype.errors %}
+                <li class="error">
+                    <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </fieldset>
+
+        <fieldset class="form-field">{{ form.creativeconcept.label }} {{ form.creativeconcept(size=50) }}
+          {% if form.creativeconcept.errors %}
+            <ul class="errors">
+                {% for error in form.creativeconcept.errors %}
+                  <li class="error">
+                      <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
+                  </li>
+                {% endfor %}
+              </ul>
+          {% endif %}
+        </fieldset>
+
+        <fieldset class="form-field">{{ form.adname.label }} {{ form.adname(size=50) }}
+          {% if form.adname.errors %}
+            <ul class="errors">
+                {% for error in form.adname.errors %}
+                  <li class="error">
+                      <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
+                  </li>
+                {% endfor %}
+              </ul>
+          {% endif %}
+        </fieldset>
+
+         <fieldset class="form-field">{{ form.objective.label }} {{ form.objective }}
+          <i class="fas fa-caret-down"></i>
+          {% if form.objective.errors %}
+            <ul class="errors">
+              {% for error in form.objective.errors %}
+                <li class="error">
+                    <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </fieldset>
+
+        <fieldset class="form-field">{{ form.attachment.label }} {{ form.attachment }}
+          <i class="fas fa-caret-down"></i>
+          {% if form.attachment.errors %}
+            <ul class="errors">
+              {% for error in form.attachment.errors %}
+                <li class="error">
+                    <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
+                </li>
+              {% endfor %}
+            </ul>
           {% endif %}
         </fieldset>
 

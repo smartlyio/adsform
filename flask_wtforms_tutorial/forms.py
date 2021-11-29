@@ -1,37 +1,37 @@
 """Form object declaration."""
 from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import (
-    DateField,
     PasswordField,
     SelectField,
     StringField,
     SubmitField,
     TextAreaField,
 )
+from wtforms.fields.html5 import DateField
+from flask_wtf.file import FileField, FileRequired
 from wtforms.validators import URL, DataRequired, Email, EqualTo, Length
 import json
-
-"""class AdForm(FlaskForm):    
-    name = StringField("Name", [DataRequired()])
-    # form_name = HiddenField('Form Name')
-    state = SelectField('State:', validators=[DataRequired()], id='select_state')
-    county = SelectField('County:', validators=[DataRequired()], id='select_county')
-    submit = SubmitField('Select County!')"""
 
 class ContactForm(FlaskForm):
     with open('countries_cities.json') as fp: # todo migrate to a db once app is launched
         data = json.load(fp)
         keys = data.keys()
         countries = list(data)
-        # cities = list(data.values())
-        # countries.sort()
-        # cities.sort()
-
-    """Contact form."""
-    country = SelectField("Country", [DataRequired()], choices=countries)
-    city = SelectField("City", [DataRequired()], choices=[])
-    name = StringField("Name", [DataRequired()])
-    email = StringField(
+        
+        country = SelectField("Country", [DataRequired()], choices=countries)
+        city = SelectField("City", [DataRequired()], choices=[])
+        language = SelectField("Language", [DataRequired()], choices=["AZ", "CS", "DA", "DE", "EL", "EN", "ET", "FI", "HE", "HR", "HU", "JA", "KA", "KK", "LT", "LV", "NO", "PL", "RU", "SK", "SL", "SR", "SV"])
+        adtitle = StringField("AdTitle", [DataRequired()])
+        adcopy = StringField("AdCopy", [DataRequired()])
+        calltoaction = SelectField("CallToAction", [DataRequired()], choices=["SHOP_NOW", "LEARN_MORE", "DOWNLOAD", "BUY_NOW", "ORDER_NOW", "ADD_TO_CART", "SEE_MORE"])
+        startdate = DateField("Start Date", [DataRequired()], format='%Y-%m-%d')
+        enddate = DateField("End Date", [DataRequired()], format='%Y-%m-%d')
+        creativetype = SelectField("CreativeType", [DataRequired()], choices=["local", "local-restaurants", "localretail", "local-partnership", "incentive-wolt", "incentive-partnership"])
+        creativeconcept = StringField("CreativeConcept", [DataRequired()])
+        adname = StringField("AdName", [DataRequired()])
+        objective = SelectField("Objective", [DataRequired()], choices=["UA", "Reach & Frequency", "Both"])
+        attachment = FileField('attachment' , validators=[FileRequired()])
+        email = StringField(
         "Email",
         [Email(message="Not a valid email address."), DataRequired()]
     )
