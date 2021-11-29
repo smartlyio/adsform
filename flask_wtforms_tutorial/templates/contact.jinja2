@@ -84,7 +84,26 @@
 
 {% block javascript %}
     <script type="text/javascript">
-        alert("YO")
+      $(function() {
+
+			  $("#country").change(function() {
+			    $.getJSON('/getcities?countryId=' + $("#country").val(), function(data) {
+            updateCities(data.result);
+			    });
+			  });
+
+        function updateCities(cityList) {
+          $('#city').empty();
+          console.log(cityList);
+          cityList.forEach(function(cityItem) {
+              $('#city').append(
+                  $('<option>', {
+                      value: cityItem,
+                      text: cityItem
+                  })
+              );
+          });
+        }
+      });
     </script>
-    <!-- The contents of myscript.js will be loaded inside the script tag -->
 {% endblock %}

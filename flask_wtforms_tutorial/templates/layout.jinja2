@@ -11,6 +11,7 @@
     <meta name="theme-color" content="#5eb9d7" >
     <link rel="canonical" href="https://flaskwtf.hackersandslackers.app/" />
     <link rel="shortcut icon" href="{{ url_for('static', filename='dist/img/favicon.png') }}" type="image/x-icon"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     {# OpenGraph #}
     <meta property="og:site_name" content={{ title }} />
@@ -25,6 +26,7 @@
     {# Styles #}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
     <script src="https://kit.fontawesome.com/e3deaeba31.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" language="javascript" src="countries_cities.json"></script> 
     <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,500" rel="stylesheet">
     {% block styles %}{% endblock %}
 </head>
@@ -49,7 +51,7 @@
         s.parentNode.insertBefore(t, s);
     })();
 </script>
-
+{% block javascript %}{% endblock %}
 </body>
 
 </html>
