@@ -11,7 +11,7 @@
 {% block content %}
     <div class="form-wrapper">
       <h2 class="title">Ad Creator</h2>
-      <form method="POST" action="{{ url_for('contact') }}">
+      <form method="POST" action="{{ url_for('createad') }}">
         {{ form.csrf_token }}
 
        <fieldset class="form-field">{{ form.country.label }} {{ form.country }}

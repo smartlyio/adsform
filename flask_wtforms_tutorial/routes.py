@@ -2,7 +2,7 @@
 from flask import current_app as app
 from flask import request, redirect, render_template, url_for, jsonify
 import json
-from .forms import ContactForm, SignupForm
+from .forms import AdForm, SignupForm
 
 
 @app.route("/")
@@ -27,17 +27,19 @@ def pick_county():
     except Exception as e:
         return str(e)
 
-@app.route("/contact", methods=["GET", "POST"])
-def contact():
-    """Standard `contact` form."""
-    form = ContactForm()
+@app.route("/createad", methods=["GET", "POST"])
+def createad():
+    """Create ads"""
+    form = AdForm()
     if form.validate_on_submit():
+        # upload file to google drive
+        # push data into google sheet
         return redirect(url_for("success"))
     return render_template(
-        "contact.jinja2",
+        "adcreation.jinja2",
         form=form,
         template="form-template",
-        title="Contact Form"
+        title="Create Ad Form"
     )
 
 
