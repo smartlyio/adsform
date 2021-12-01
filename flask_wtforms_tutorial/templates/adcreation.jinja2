@@ -11,7 +11,7 @@
 {% block content %}
     <div class="form-wrapper">
       <h2 class="title">Ad Creator</h2>
-      <form method="POST" action="{{ url_for('createad') }}">
+      <form method="POST" action="{{ url_for('createad') }}" enctype="multipart/form-data">
         {{ form.csrf_token }}
 
        <fieldset class="form-field">{{ form.country.label }} {{ form.country }}
@@ -182,7 +182,7 @@
 {% endblock %}
 
 {% block javascript %}
-    <script type="text/javascript">
+    <script type="text/javascript" >
       $(function() {
 
 			  $("#country").change(function() {

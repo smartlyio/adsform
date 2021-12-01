@@ -33,23 +33,36 @@ def pick_county():
 @app.route("/createad", methods=["GET", "POST"])
 def createad():
     """Create ads"""
-    form = AdForm()
+    form = AdForm(request.form)
+    print(form['attachment'].data)
     if form.validate_on_submit():
-        # upload file to google drive
-        file_attachment = form['attachment'].data
-        filename = secure_filename(file_attachment.filename)
-        file_link = write_into_drive(file_attachment, filename) # form.file.data.filename
+        att = request.files.getlist(form.attachment.name)
+        filelink = ''
+        if att:
+            for picture_upload in att:
+                picture_contents = picture_upload.stream.read()
+                print(type(picture_contents))
+                # upload file to google drive
+                file_link = write_into_drive(picture_contents, att[0]) # form.file.data.filename
+                print(file_link)
+        else:
+            return render_template(
+            "adcreation.jinja2",
+            form=form,
+            template="form-template",
+            title="Create Ad Form"
+        )
         print(file_link)
         #if  date == (Date(1111,11,11)) add empty
         ad_data = [
-            datetime.now(),
+            # datetime.now().strftime("%m/%d/%Y"),
             form['language'].data,
             # mimetype (image or video)
             form['adcopy'].data,
             form['adtitle'].data,
             form['calltoaction'].data,
-            form['startdate'].data,
-            form['enddate'].data,
+            # form['startdate'].data,
+            # form['enddate'].data,
             form['creativetype'].data,
             form['creativeconcept'].data,
             form['adname'].data,

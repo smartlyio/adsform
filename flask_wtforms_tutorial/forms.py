@@ -9,7 +9,7 @@ from wtforms import (
     TextAreaField,
 )
 from wtforms.fields.html5 import DateField
-from flask_wtf.file import FileRequired
+from flask_wtf.file import FileField, FileRequired
 from wtforms import MultipleFileField
 from wtforms.validators import URL, DataRequired, Email, EqualTo, Length
 import json
@@ -32,7 +32,7 @@ class AdForm(FlaskForm):
         creativeconcept = StringField("Creative concept", [DataRequired()])
         adname = StringField("Ad Name", [DataRequired()])
         objective = SelectField("Objective", [DataRequired()], choices=["UA", "Reach & Frequency", "Both"])
-        attachment = MultipleFileField('Creative upload' , validators=[FileRequired()])
+        attachment = FileField('Creative upload')
         # attachment = FileField('Creative upload' , validators=[FileRequired()])
         #  FileAllowed(['jpg', 'png', 'mp4', 'gif'], 'Images or videos only!')]
         submit = SubmitField("Submit")
