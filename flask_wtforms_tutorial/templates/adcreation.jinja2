@@ -15,7 +15,6 @@
         {{ form.csrf_token }}
 
        <fieldset class="form-field">{{ form.country.label }} {{ form.country }}
-          <i class="fas fa-caret-down"></i>
           {% if form.country.errors %}
             <ul class="errors">
               {% for error in form.country.errors %}
@@ -28,7 +27,6 @@
         </fieldset>
 
        <fieldset class="form-field">{{ form.city.label }} {{ form.city }}
-          <i class="fas fa-caret-down"></i>
           {% if form.country.errors %}
             <ul class="errors">
               {% for error in form.country.errors %}
@@ -41,7 +39,6 @@
         </fieldset>
 
         <fieldset class="form-field">{{ form.language.label }} {{ form.language }}
-          <i class="fas fa-caret-down"></i>
           {% if form.language.errors %}
             <ul class="errors">
               {% for error in form.language.errors %}
@@ -78,7 +75,6 @@
         </fieldset>
 
         <fieldset class="form-field">{{ form.calltoaction.label }} {{ form.calltoaction }}
-          <i class="fas fa-caret-down"></i>
           {% if form.calltoaction.errors %}
             <ul class="errors">
               {% for error in form.calltoaction.errors %}
@@ -115,7 +111,6 @@
         </fieldset>
 
         <fieldset class="form-field">{{ form.creativetype.label }} {{ form.creativetype }}
-          <i class="fas fa-caret-down"></i>
           {% if form.creativetype.errors %}
             <ul class="errors">
               {% for error in form.creativetype.errors %}
@@ -152,7 +147,6 @@
         </fieldset>
 
          <fieldset class="form-field">{{ form.objective.label }} {{ form.objective }}
-          <i class="fas fa-caret-down"></i>
           {% if form.objective.errors %}
             <ul class="errors">
               {% for error in form.objective.errors %}
@@ -163,21 +157,25 @@
             </ul>
           {% endif %}
         </fieldset>
-
+        
         <fieldset class="form-field">{{ form.attachment.label }} {{ form.attachment }}
-          <i class="fas fa-caret-down"></i>
-          {% if form.attachment.errors %}
-            <ul class="errors">
-              {% for error in form.attachment.errors %}
-                <li class="error">
-                    <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
-                </li>
-              {% endfor %}
-            </ul>
-          {% endif %}
+            {% if form.attachment.errors %}
+              <ul class="errors">
+                {% for error in form.attachment.errors %}
+                  <li class="error">
+                      <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
         </fieldset>
 
         {{ form.submit }}
+        {{ form.hidden_tag() }}
+        
+        {% if form.errors %}
+          {{ form.errors }}
+        {% endif %}
       </form>
     </div>
 

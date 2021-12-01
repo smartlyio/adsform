@@ -1,8 +1,11 @@
 """Routing."""
 from flask import current_app as app
 from flask import request, redirect, render_template, url_for, jsonify
-import json
 from .forms import AdForm, SignupForm
+from .googleint import *
+from datetime import datetime
+from werkzeug.utils import secure_filename
+import json
 
 
 @app.route("/")
@@ -33,8 +36,45 @@ def createad():
     form = AdForm()
     if form.validate_on_submit():
         # upload file to google drive
-        # push data into google sheet
-        return redirect(url_for("success"))
+        file_attachment = form['attachment'].data
+        filename = secure_filename(file_attachment.filename)
+        file_link = write_into_drive(file_attachment, filename) # form.file.data.filename
+        print(file_link)
+        #if  date == (Date(1111,11,11)) add empty
+        ad_data = [
+            datetime.now(),
+            form['language'].data,
+            # mimetype (image or video)
+            form['adcopy'].data,
+            form['adtitle'].data,
+            form['calltoaction'].data,
+            form['startdate'].data,
+            form['enddate'].data,
+            form['creativetype'].data,
+            form['creativeconcept'].data,
+            form['adname'].data,
+            # "x", # mediasize
+            # "y", # video length
+            file_link,
+            form['country'].data,
+            form['city'].data,
+            form['objective'].data,
+            # "coord", # coordinates
+            # "live", # live
+            # "fb", # fb page
+            # "instagram"# instagram account
+        ]
+        write_status = write_into_sheet(ad_data)
+        if write_status == 'ok':
+            return redirect(url_for("success"))
+        else:
+            return render_template(
+            "adcreation.jinja2",
+            form=form,
+            template="form-template",
+            title="Create Ad Form"
+        )
+
     return render_template(
         "adcreation.jinja2",
         form=form,
