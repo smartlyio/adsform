@@ -3,7 +3,8 @@ from flask import current_app as app
 from flask import request, redirect, render_template, url_for, jsonify
 from .forms import AdForm, SignupForm
 from .googleint import *
-from datetime import datetime
+from .data_fetcher import *
+from datetime import datetime, date
 from werkzeug.utils import secure_filename
 import json
 
@@ -37,14 +38,57 @@ def createad():
     print(form['attachment'].data)
     if form.validate_on_submit():
         att = request.files.getlist(form.attachment.name)
-        filelink = ''
         if att:
             for picture_upload in att:
+                currentfile = att[0]
+                filename = currentfile.filename
                 picture_contents = picture_upload.stream.read()
                 print(type(picture_contents))
+                
                 # upload file to google drive
-                file_link = write_into_drive(picture_contents, att[0]) # form.file.data.filename
-                print(file_link)
+                media_url = write_into_drive(picture_contents, currentfile)
+                
+                file_type = "image" if (currentfile.mimetype == "image/jpeg" or currentfile.mimetype == "image/png" or currentfile.mimetype == "image/svg") else "video"
+                video_length = "na" if(file_type == "image" ) else get_video_duration(filename)
+                mediasize = get_media_size(filename)
+                start_date = "" if (form['startdate'].data == date(1111,11,11)) else form['startdate'].data.strftime('%m/%d/%Y')
+                end_date = "" if (form['enddate'].data == date(1111,11,11)) else form['enddate'].data.strftime('%m/%d/%Y')
+                coordinates = get_coordinates(form['city'].data)
+                
+                # [ID,language, adFormat, copy, title, CTA, startDate, endDate, creativeType, conceptName, adName, 
+                # mediaSize, videoLength, mediaURL, country, city, UA or R&F, coordinates, Live, facebook page, IG account]
+                ad_data = [
+                    datetime.now().strftime("%c"),
+                    form['language'].data,
+                    file_type,
+                    form['adcopy'].data,
+                    form['adtitle'].data,
+                    form['calltoaction'].data,
+                    start_date,
+                    end_date,
+                    form['creativetype'].data,
+                    form['creativeconcept'].data,
+                    form['adname'].data,
+                    mediasize, # mediasize
+                    video_length, # video length (na for images)
+                    media_url,
+                    form['country'].data,
+                    form['city'].data,
+                    form['objective'].data, # UA or R&F or both
+                    coordinates, # coordinates
+                    '',# fb page id, filled in the sheet with a vlookup
+                    '' # instagram id, filled in the sheet with a vlookup
+                ]
+                write_status = write_into_sheet(ad_data)
+                if write_status == 'ok':
+                    return redirect(url_for("success"))
+                else:
+                    return render_template(
+                    "adcreation.jinja2",
+                    form=form,
+                    template="form-template",
+                    title="Create Ad Form"
+                )
         else:
             return render_template(
             "adcreation.jinja2",
@@ -52,41 +96,7 @@ def createad():
             template="form-template",
             title="Create Ad Form"
         )
-        print(file_link)
-        #if  date == (Date(1111,11,11)) add empty
-        ad_data = [
-            # datetime.now().strftime("%m/%d/%Y"),
-            form['language'].data,
-            # mimetype (image or video)
-            form['adcopy'].data,
-            form['adtitle'].data,
-            form['calltoaction'].data,
-            # form['startdate'].data,
-            # form['enddate'].data,
-            form['creativetype'].data,
-            form['creativeconcept'].data,
-            form['adname'].data,
-            # "x", # mediasize
-            # "y", # video length
-            file_link,
-            form['country'].data,
-            form['city'].data,
-            form['objective'].data,
-            # "coord", # coordinates
-            # "live", # live
-            # "fb", # fb page
-            # "instagram"# instagram account
-        ]
-        write_status = write_into_sheet(ad_data)
-        if write_status == 'ok':
-            return redirect(url_for("success"))
-        else:
-            return render_template(
-            "adcreation.jinja2",
-            form=form,
-            template="form-template",
-            title="Create Ad Form"
-        )
+        
 
     return render_template(
         "adcreation.jinja2",

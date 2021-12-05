@@ -5,29 +5,8 @@ from oauth2client.service_account import ServiceAccountCredentials
 from PIL import Image
 from io import BytesIO
 import os
+import subprocess
 
-"""
-
-workingsheet.update('A1', [[1, 2], [3, 4]])
-
-writes 
------A-----B-----
------1-----2-----
------3-----4-----
-
-print(workingsheet.get('A1'))
-
-reads 
-1
-
-"""
-
-"""
-    form data obj must be in this format: 
-    [ID,language, adFormat, copy, title, CTA, startDate, endDate, creativeType, conceptName, adName, 
-    mediaSize, videoLength, mediaURL, country, city, UA or R&F, coordinates, Live, facebook page, IG account]
-
-"""
 def write_into_sheet(ad_data):
     try:
         gc = gspread.service_account(filename='flask_wtforms_tutorial/service_account.json')
@@ -55,20 +34,15 @@ def write_into_drive(filebytes, file):
         drive = GoogleDrive(gauth)
         drive_file = drive.CreateFile({'title':file.filename,
                               'mimeType': file.mimetype,
-                              #'parents': [{"kind": "drive#fileLink", "id": folder_id}]
         })
 
         if not os.path.exists('temp/' + file.filename):
                 image = Image.open(BytesIO(filebytes))
-                #image = Image.open(filebytes)
                 image.save('temp/' + file.filename)
                 image.close()
 
         drive_file.SetContentFile('temp/' + file.filename)
         drive_file.Upload()
-        # drive_file.SetContentString(filebytes.decode('utf-8'))
-        # drive_file.SetContentFile(filebytes)
-        # drive_file.Upload()
         #SET PERMISSION todo ceren review this idea
         drive_file.InsertPermission({
                                     'type': 'anyone',
@@ -88,8 +62,30 @@ def write_into_drive(filebytes, file):
         print('ERROR when uploading to drive:', str(e))
         return ''
 
-"""
-file2 = drive.CreateFile({'title':'filename.jpg',
-                          'mimeType':'image/jpeg',
-                          'parents': [{"kind": "drive#fileLink", "id": folder_id}]
-"""
+def get_media_size(filename):
+    try:
+        im = Image.open("temp/"+filename)
+
+        print(im.size)
+        print(type(im.size))
+
+        w, h = im.size
+        print('width: ', w)
+        print('height:', h)
+        return ("{}x{}").format(w,h)
+    except:
+        print("couldnt get media size for image {}").format(filename)
+        return ""
+
+
+def get_video_duration(filename):
+    try:
+        result = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
+                                 "format=duration", "-of",
+                                 "default=noprint_wrappers=1:nokey=1", 'temp/'+filename],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT)
+        return float(result.stdout)
+    except:
+        print("couldnt get video length for file {}").format(filename)
+        return ""
