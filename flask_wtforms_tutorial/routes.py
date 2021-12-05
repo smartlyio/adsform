@@ -1,7 +1,7 @@
 """Routing."""
 from flask import current_app as app
 from flask import request, redirect, render_template, url_for, jsonify
-from .forms import AdForm, SignupForm
+from .forms import AdForm
 from .googleint import *
 from .data_fetcher import *
 from datetime import datetime, date
@@ -39,18 +39,17 @@ def createad():
     if form.validate_on_submit():
         att = request.files.getlist(form.attachment.name)
         if att:
-            for picture_upload in att:
+            for madia_upload in att: #picture_upload
                 currentfile = att[0]
                 filename = currentfile.filename
-                picture_contents = picture_upload.stream.read()
-                print(type(picture_contents))
+                media_contents = madia_upload.stream.read()
                 
                 # upload file to google drive
-                media_url = write_into_drive(picture_contents, currentfile)
+                media_url = write_into_drive(media_contents, currentfile)
                 
                 file_type = "image" if (currentfile.mimetype == "image/jpeg" or currentfile.mimetype == "image/png" or currentfile.mimetype == "image/svg") else "video"
                 video_length = "na" if(file_type == "image" ) else get_video_duration(filename)
-                mediasize = get_media_size(filename)
+                mediasize = get_image_size(filename) if(file_type == "image" ) else get_video_size(filename)
                 start_date = "" if (form['startdate'].data == date(1111,11,11)) else form['startdate'].data.strftime('%m/%d/%Y')
                 end_date = "" if (form['enddate'].data == date(1111,11,11)) else form['enddate'].data.strftime('%m/%d/%Y')
                 coordinates = get_coordinates(form['city'].data)
@@ -75,9 +74,9 @@ def createad():
                     form['country'].data,
                     form['city'].data,
                     form['objective'].data, # UA or R&F or both
-                    coordinates, # coordinates
-                    '',# fb page id, filled in the sheet with a vlookup
-                    '' # instagram id, filled in the sheet with a vlookup
+                    coordinates # coordinates
+                    # fb page id, filled in the sheet with a vlookup
+                    # instagram id, filled in the sheet with a vlookup
                 ]
                 write_status = write_into_sheet(ad_data)
                 if write_status == 'ok':
@@ -105,19 +104,6 @@ def createad():
         title="Create Ad Form"
     )
 
-
-@app.route("/signup", methods=["GET", "POST"])
-def signup():
-    """User sign-up form for account creation."""
-    form = SignupForm()
-    if form.validate_on_submit():
-        return redirect(url_for("success"))
-    return render_template(
-        "signup.jinja2",
-        form=form,
-        template="form-template",
-        title="Signup Form"
-    )
 
 @app.route("/comingsoon", methods=["GET", "POST"])
 def comingsoon():

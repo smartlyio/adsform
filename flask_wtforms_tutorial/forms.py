@@ -36,34 +36,3 @@ class AdForm(FlaskForm):
         submit = SubmitField("Submit")
 
 
-class SignupForm(FlaskForm):
-    """Sign up for a user account."""
-
-    email = StringField(
-        "Email",
-        [Email(message="Not a valid email address."), DataRequired()]
-    )
-    password = PasswordField(
-        "Password",
-        [DataRequired(message="Please enter a password.")],
-    )
-    confirmPassword = PasswordField(
-        "Repeat Password",
-        [EqualTo(password, message="Passwords must match.")]
-    )
-    title = SelectField(
-        "Title",
-        [DataRequired()],
-        choices=[
-            ("Farmer", "farmer"),
-            ("Corrupt Politician", "politician"),
-            ("No-nonsense City Cop", "cop"),
-            ("Professional Rocket League Player", "rocket"),
-            ("Lonely Guy At A Diner", "lonely"),
-            ("Pokemon Trainer", "pokemon"),
-        ],
-    )
-    website = StringField("Website", validators=[URL()])
-    birthday = DateField("Your Birthday")
-    recaptcha = RecaptchaField()
-    submit = SubmitField("Submit")
