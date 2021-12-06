@@ -12,7 +12,7 @@ import datetime
 def write_into_sheet(ad_data):
 	try:
 		gc = gspread.service_account(
-			filename='flask_wtforms_tutorial/service_account.json')
+			filename='flask_wtforms/service_account.json')
 		sh = gc.open("Facebook Ads Express - Wolt")
 		worksheet = sh.sheet1
 		next_row = next_available_row(worksheet)
@@ -34,7 +34,7 @@ def write_into_drive(filebytes, file, filename):
 		gauth = GoogleAuth()
 		scope = ["https://www.googleapis.com/auth/drive"]
 		gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(
-			'flask_wtforms_tutorial/service_account.json', scope)
+			'flask_wtforms/service_account.json', scope)
 		drive = GoogleDrive(gauth)
 		drive_file = drive.CreateFile({'title': filename,
 							  'mimeType': file.mimetype,

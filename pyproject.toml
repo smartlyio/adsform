@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "flask_wtforms_tutorial"
+name = "flask_wtforms"
 version = "0.1.0"
 description = "POC Flask app to create ad rows into google sheet."
 authors = ["Ceren Tuker <ceren.tuker@smartly.io>"]
