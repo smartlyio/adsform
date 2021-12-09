@@ -6,14 +6,18 @@ from werkzeug.utils import secure_filename
 from PIL import Image
 from io import BytesIO
 import os
+import json
 import cv2
+from google.oauth2.service_account import Credentials
+from google.cloud import secretmanager
 import datetime
+
 
 def write_into_sheet(ad_data):
 	try:
-		gc = gspread.service_account(
-			filename='flask_wtforms/service_account.json')
-		sh = gc.open("Facebook Ads Express - Wolt")
+		credentials = retrieve_credentials()
+		gs = gspread.authorize(credentials)
+		sh = gs.open("Facebook Ads Express - Wolt")
 		worksheet = sh.sheet1
 		next_row = next_available_row(worksheet)
 		row_to_begin = "A{}".format(next_row)
@@ -23,6 +27,23 @@ def write_into_sheet(ad_data):
 		print('An error occurred while writing to the sheet', e)
 		return "error"
 
+def get_secrets():
+    client = secretmanager.SecretManagerServiceClient()
+    parent = client.project_path('technical-solutions-237213')
+    responses = {}
+    for secret in client.list_secrets(parent):
+        response = client.access_secret_version(secret.name + "/versions/1")
+        responses[secret.name] = response.payload.data.decode('UTF-8')
+    return responses
+
+
+def retrieve_credentials():
+    secrets = get_secrets()
+    service_account_key = json.loads(secrets['projects/927617313118/secrets/feed-form'])
+    scope = ['https://www.googleapis.com/auth/cloud-platform']
+    service_account_credentials = Credentials.from_service_account_info(
+        service_account_key, scopes=scope)
+    return service_account_credentials
 
 def next_available_row(worksheet):
 	str_list = list(filter(None, worksheet.col_values(1)))
@@ -74,16 +95,12 @@ def write_into_drive(filebytes, file, filename):
 def get_image_size(filename):
 	try:
 		im = Image.open("temp/"+filename)
-
-		print(im.size)
-		print(type(im.size))
-
 		w, h = im.size
 		print('width: ', w)
 		print('height:', h)
 		return ("{}x{}").format(w,h)
 	except Exception as e:
-		print("couldn't get media size for image {} with error {}").format(filename, str(e))
+		print("couldn't get media size for image {} with error {}".format(filename, str(e)))
 		return ""
 
 def get_video_size(filename):
@@ -93,7 +110,7 @@ def get_video_size(filename):
 		width = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
 		return ('{}x{}').format(width,height)
 	except Exception as e:
-		print("couldn't get media size for video {} with error {}").format(filename, str(e))
+		print("couldn't get media size for video {} with error {}".format(filename, str(e)))
 		return ""
 
 # https://stackoverflow.com/questions/49048111/how-to-get-the-duration-of-video-using-cv2

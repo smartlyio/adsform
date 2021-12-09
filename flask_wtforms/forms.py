@@ -15,7 +15,7 @@ from wtforms.validators import URL, DataRequired, Email, EqualTo, Length
 import json
 
 class AdForm(FlaskForm):
-    with open('countries_cities.json') as fp: # todo migrate to a db once app is launched
+    with open('countries_cities.json') as fp:
         data = json.load(fp)
         keys = data.keys()
         countries = list(data)
