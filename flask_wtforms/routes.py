@@ -5,6 +5,7 @@ from .forms import AdForm
 from .googleint import *
 from datetime import datetime, date
 from werkzeug.utils import secure_filename
+import logging
 import json
 
 
@@ -35,7 +36,7 @@ def createad():
 	try:
 		"""Create ads"""
 		form = AdForm(request.form)
-		print(form['attachment'].data)
+		logging.warning('starting createad')
 		if form.validate_on_submit():
 			att = request.files.getlist(form.attachment.name)
 			if att:
@@ -46,13 +47,15 @@ def createad():
 					
 					# upload file to google drive
 					media_url = write_into_drive(media_contents, currentfile, filename)
-					
+					logging.warning("written into google drive!")
+					logging.warning(media_url)
 					file_type = "image" if (currentfile.mimetype == "image/jpeg" or currentfile.mimetype == "image/png" or currentfile.mimetype == "image/svg") else "video"
 					video_length = "na" if(file_type == "image" ) else get_video_duration(filename)
 					mediasize = get_image_size(filename) if(file_type == "image" ) else get_video_size(filename)
 					start_date = "" if (form['startdate'].data == date(1111,11,11)) else form['startdate'].data.strftime('%m/%d/%Y') #encountered what seems to be a bug in validation of empty values in wtforms
 					end_date = "" if (form['enddate'].data == date(1111,11,11)) else form['enddate'].data.strftime('%m/%d/%Y')
-					print("so far so good 1")
+					logging.warning('so far so good 1')
+					logging.warning("so far so good 1")
 					# remove from local temp file
 					if os.path.exists('temp/' + filename):
 						os.remove('temp/' + filename)
@@ -76,8 +79,9 @@ def createad():
 						form['city'].data,
 						form['objective'].data, # UA or R&F or both
 					]
+					logging.warning("attempting a write into sheets")
 					write_status = write_into_sheet(ad_data)
-
+					logging.warning("written into sheet, hopefully")
 					if write_status == 'ok':
 						return redirect(url_for("success"))
 					else:
@@ -88,7 +92,7 @@ def createad():
 						title="Create Ad Form"
 					)
 			else:
-				print('something bad happened.')
+				logging.warning('something bad happened.')
 				return render_template(
 				"adcreation.jinja2",
 				form=form,
@@ -97,8 +101,8 @@ def createad():
 			)
 
 	except Exception as e:	
-		print('something bad happened. Again.')
-		print(str(e))
+		logging.warning('something bad happened. Again.')
+		logging.warning(str(e))
 		return render_template(
 			"adcreation.jinja2",
 			form=form,

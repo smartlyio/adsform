@@ -2,7 +2,7 @@
 
 runtime: python
 env: flex
-entrypoint: gunicorn -t 300 -b :$PORT -k gevent -w 3 wsgi:app
+entrypoint: gunicorn -t 300 -b :$PORT -w 3 wsgi:app
 service: feed-form-app
 service_account: feedformservice@technical-solutions-237213.iam.gserviceaccount.com
 

@@ -4,10 +4,12 @@ from pydrive.drive import GoogleDrive
 from oauth2client.service_account import ServiceAccountCredentials
 from werkzeug.utils import secure_filename
 from PIL import Image
+from pathlib import Path
 from io import BytesIO
 import os
 import json
 import cv2
+import logging
 from google.oauth2.service_account import Credentials
 from google.cloud import secretmanager
 import datetime
@@ -16,7 +18,9 @@ import datetime
 def write_into_sheet(ad_data):
 	try:
 		credentials = retrieve_credentials()
+		logging.warning("ran get credentials from service account")
 		gs = gspread.authorize(credentials)
+		logging.warning("authorized gspread!")
 		sh = gs.open("Facebook Ads Express - Wolt")
 		worksheet = sh.sheet1
 		next_row = next_available_row(worksheet)
@@ -24,25 +28,33 @@ def write_into_sheet(ad_data):
 		worksheet.update(row_to_begin, [ad_data])
 		return "ok"
 	except Exception as e:
-		print('An error occurred while writing to the sheet', e)
+		logging.warning('An error occurred while writing to the sheet', e)
 		return "error"
 
 def get_secrets():
-    client = secretmanager.SecretManagerServiceClient()
-    parent = client.project_path('technical-solutions-237213')
-    responses = {}
-    for secret in client.list_secrets(parent):
-        response = client.access_secret_version(secret.name + "/versions/1")
-        responses[secret.name] = response.payload.data.decode('UTF-8')
-    return responses
+	logging.warning('in get_secrets')
+	client = secretmanager.SecretManagerServiceClient()
+	logging.warning('secretmanager.SecretManagerServiceClient ran OK')
+	jsonPl = client.access_secret_version(
+                request={"name": f"projects/927617313118/secrets/feed-form/versions/latest"}
+            ).payload.data.decode("UTF-8")
+	logging.warning('got jsonPl')
+	logging.warning(jsonPl[0:15])
+	return json.loads(jsonPl)
 
 
 def retrieve_credentials():
     secrets = get_secrets()
-    service_account_key = json.loads(secrets['projects/927617313118/secrets/feed-form'])
-    scope = ['https://www.googleapis.com/auth/cloud-platform']
-    service_account_credentials = Credentials.from_service_account_info(
-        service_account_key, scopes=scope)
+    logging.warning('get secrets ran ok')
+    scope = [
+    'https://www.googleapis.com/auth/spreadsheets',
+    'https://www.googleapis.com/auth/drive'
+	]
+    #service_account_credentials = ServiceAccountCredentials._from_parsed_json_keyfile(
+    #    secrets, scopes=scope)
+    service_account_credentials = ServiceAccountCredentials.from_json_keyfile_dict(
+        secrets, scopes=scope)
+    logging.warning('get credentials from serv acc info ran ok')
     return service_account_credentials
 
 def next_available_row(worksheet):
@@ -52,23 +64,32 @@ def next_available_row(worksheet):
 
 def write_into_drive(filebytes, file, filename):
 	try:
+		logging.warning('trying to write into drive')
 		gauth = GoogleAuth()
-		scope = ["https://www.googleapis.com/auth/drive"]
-		gauth.credentials = ServiceAccountCredentials.from_json_keyfile_name(
-			'flask_wtforms/service_account.json', scope)
+		gauth.auth_method = 'service'
+		logging.warning('got gauth')
+		credentials = retrieve_credentials()
+		logging.warning('retrieved credentials')
+		gauth.credentials = credentials
 		drive = GoogleDrive(gauth)
+		logging.warning("google drive initialised with credentials")
 		drive_file = drive.CreateFile({'title': filename,
 							  'mimeType': file.mimetype,
 		})
 
+		logging.warning("starting to add temporary local file")
+		Path("temp").mkdir(exist_ok=True)
 		if not os.path.exists('temp/' + filename):
+			logging.warning("attempting adding temp file")
 			if (file.mimetype == "image/jpeg" or file.mimetype == "image/png" or file.mimetype == "image/svg"):
 				image = Image.open(BytesIO(filebytes))
 				image.save('temp/' + filename)
+				logging.warning("image SAVED")
 				image.close()
 			else :
 				open('temp/'+filename, 'wb').write(filebytes)
 
+		logging.warning("completed adding temporary local file")
 		drive_file.SetContentFile('temp/'+filename)
 		drive_file.Upload()
 		# SET PERMISSION todo ceren review this idea
@@ -85,22 +106,22 @@ def write_into_drive(filebytes, file, filename):
 		link=link.split('?')[0]
 		link=link.split('/')[-2]
 		link='https://docs.google.com/uc?export=download&id='+link
-
+		
+		logging.warning("HERE IS THE DRIVE LINK ->")
+		logging.warning(link)
 		return link
 
 	except Exception as e:
-		print('ERROR when uploading to drive:', str(e))
+		logging.warning('ERROR when uploading to drive:', str(e))
 		return ''
 
 def get_image_size(filename):
 	try:
 		im = Image.open("temp/"+filename)
 		w, h = im.size
-		print('width: ', w)
-		print('height:', h)
 		return ("{}x{}").format(w,h)
 	except Exception as e:
-		print("couldn't get media size for image {} with error {}".format(filename, str(e)))
+		logging.warning("couldn't get media size for image {} with error {}".format(filename, str(e)))
 		return ""
 
 def get_video_size(filename):
@@ -110,7 +131,7 @@ def get_video_size(filename):
 		width = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
 		return ('{}x{}').format(width,height)
 	except Exception as e:
-		print("couldn't get media size for video {} with error {}".format(filename, str(e)))
+		logging.warning("couldn't get media size for video {} with error {}".format(filename, str(e)))
 		return ""
 
 # https://stackoverflow.com/questions/49048111/how-to-get-the-duration-of-video-using-cv2
@@ -127,5 +148,5 @@ def get_video_duration(filename):
 		video_time = str(datetime.timedelta(seconds=seconds))
 		return video_time
 	except Exception as e:
-		print ("couldn't get video length for file {} with error {}").format(filename, str(e))
+		logging.warning("couldn't get video length for file {} with error {}").format(filename, str(e))
 		return ""
