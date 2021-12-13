@@ -21,9 +21,11 @@ def write_into_sheet(ad_data):
 		logging.warning("ran get credentials from service account")
 		gs = gspread.authorize(credentials)
 		logging.warning("authorized gspread!")
-		sh = gs.open("Facebook Ads Express - Wolt")
+		sh = gs.open_by_key("1gf6SCpqDZDxFSqeXyXjGwS0vPHgNQjTWYEm1WYeJPi4")
 		worksheet = sh.sheet1
 		next_row = next_available_row(worksheet)
+		logging.warning('next_available_row :')
+		logging.warning(next_row)
 		row_to_begin = "A{}".format(next_row)
 		worksheet.update(row_to_begin, [ad_data])
 		return "ok"
@@ -39,7 +41,7 @@ def get_secrets():
                 request={"name": f"projects/927617313118/secrets/feed-form/versions/latest"}
             ).payload.data.decode("UTF-8")
 	logging.warning('got jsonPl')
-	logging.warning(jsonPl[0:15])
+	myjson = json.loads(jsonPl)
 	return json.loads(jsonPl)
 
 
@@ -50,10 +52,7 @@ def retrieve_credentials():
     'https://www.googleapis.com/auth/spreadsheets',
     'https://www.googleapis.com/auth/drive'
 	]
-    #service_account_credentials = ServiceAccountCredentials._from_parsed_json_keyfile(
-    #    secrets, scopes=scope)
-    service_account_credentials = ServiceAccountCredentials.from_json_keyfile_dict(
-        secrets, scopes=scope)
+    service_account_credentials = ServiceAccountCredentials.from_json_keyfile_dict(secrets, scopes=scope)
     logging.warning('get credentials from serv acc info ran ok')
     return service_account_credentials
 

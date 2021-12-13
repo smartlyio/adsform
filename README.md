@@ -25,13 +25,4 @@ $ . .venv/bin/activate
 $ flask run
 ``` 
 
-### Environment Variables
-
-Replace the values in **.env.example** with your values and rename this file to **.env**:
-
-* `FLASK_APP`: Entry point of your application (should be `wsgi.py`).
-* `FLASK_ENV`: The environment to run your app in (either `development` or `production`).
-* `SECRET_KEY`: Randomly generated string of characters used to encrypt your app's data.
-
-*Remember never to commit secrets saved in .env files to Github.*
 
