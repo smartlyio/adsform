@@ -24,9 +24,9 @@
               {% endfor %}
             </ul>
           {% endif %}
-        <p class="description">Tip: Press and hold ctrl or cmd to be able to click on multiple cities</p>
         </fieldset>
 
+       <p class="description">Hold Ctrl (Windows) or Cmd (Mac) for multiple selections</p>
        <fieldset class="form-field">{{ form.city.label }} {{ form.city }}
           {% if form.country.errors %}
             <ul class="errors">
@@ -50,7 +50,8 @@
             </ul>
           {% endif %}
         </fieldset>
-
+        
+        <p class="description">Max 25 characters. You can include emojis too!</p>
         <fieldset class="form-field">{{ form.adtitle.label }} {{ form.adtitle(size=25) }}
           {% if form.adtitle.errors %}
             <ul class="errors">
@@ -63,6 +64,7 @@
           {% endif %}
         </fieldset>
 
+        <p class="description">Main text of the ad, max 125 characters. You can include emojis too!</p>
         <fieldset class="form-field">{{ form.adcopy.label }} {{ form.adcopy(size=125) }}
           {% if form.adcopy.errors %}
             <ul class="errors">
@@ -75,6 +77,7 @@
           {% endif %}
         </fieldset>
 
+        <p class="description">Will be shown in each user's local language</p>
         <fieldset class="form-field">{{ form.calltoaction.label }} {{ form.calltoaction }}
           {% if form.calltoaction.errors %}
             <ul class="errors">
@@ -111,6 +114,7 @@
           {% endif %}
         </fieldset>
 
+        <p class="description">If the ad mentions any kind of offer, choose incentive. Local-partnership = partnership without any offer. Local-restaurant = restaurant promotion. Loca-retail = other venue promotion. For all others choose just local.</p>
         <fieldset class="form-field">{{ form.creativetype.label }} {{ form.creativetype }}
           {% if form.creativetype.errors %}
             <ul class="errors">
@@ -123,6 +127,7 @@
           {% endif %}
         </fieldset>
 
+        <p class="description">Restaurant name, partner name, free delivery, name of the launched city or similar identifier (for example "kfc" or "freedelivery"). DO NOT use spaces or underscores, write everything as one word.</p>
         <fieldset class="form-field">{{ form.creativeconcept.label }} {{ form.creativeconcept(size=50) }}
           {% if form.creativeconcept.errors %}
             <ul class="errors">
@@ -159,6 +164,7 @@
           {% endif %}
         </fieldset>
         
+        <p class="description">You can upload multiple files at once. Accepted format: jpg, png, svg, mp4</p>
         <fieldset class="form-field">{{ form.attachments.label }} {{ form.attachments }}
             {% if form.attachments.errors %}
               <ul class="errors">
@@ -192,9 +198,16 @@
 			    });
 			  });
 
+        // updates with citylist + 'all' option on top as text
         function updateCities(cityList) {
           $('#city').empty();
-          console.log(cityList);
+          // console.log(cityList);
+          $('#city').append(
+            $('<option>', {
+                value: 'all',
+                text: 'all'
+            })
+          );
           cityList.forEach(function(cityItem) {
               $('#city').append(
                   $('<option>', {

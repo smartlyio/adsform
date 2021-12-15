@@ -9,6 +9,13 @@ form {
   padding: 0;
 }
 
+.description {
+  font-size: 0.8rem;
+  color: #838fb3;
+  font-weight: 100;
+  margin-bottom:0;
+}
+
 .container {
   padding: 80px;
   display: flex;

@@ -143,9 +143,9 @@ def get_video_duration(filename):
 		fps = int(vid.get(cv2.CAP_PROP_FPS))
 
 		# calculate dusration of the video
-		seconds = int(frames / fps)
-		video_time = str(datetime.timedelta(seconds=seconds))
-		return video_time
+		seconds = int(frames / fps) + 1
+		# video_time = str(datetime.timedelta(seconds=seconds))
+		return str(seconds) + "s"
 	except Exception as e:
 		logging.warning("couldn't get video length for file {} with error {}".format(filename, str(e)))
 		return ""
