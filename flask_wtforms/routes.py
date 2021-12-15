@@ -59,38 +59,40 @@ def createad():
 					# remove from local temp file
 					if os.path.exists('temp/' + filename):
 						os.remove('temp/' + filename)
-					
-					ad_data = [
-						datetime.now().strftime("%c"),
-						form['language'].data,
-						file_type,
-						form['adcopy'].data,
-						form['adtitle'].data,
-						form['calltoaction'].data,
-						start_date,
-						end_date,
-						form['creativetype'].data,
-						form['creativeconcept'].data,
-						form['adname'].data,
-						mediasize,
-						video_length,
-						media_url,
-						form['country'].data,
-						form['city'].data,
-						form['objective'].data, # UA or R&F or both
-					]
-					logging.warning("attempting a write into sheets")
-					write_status = write_into_sheet(ad_data)
-					logging.warning("written into sheet, hopefully")
-					if write_status == 'ok':
-						return redirect(url_for("success"))
-					else:
-						return render_template(
-						"adcreation.jinja2",
-						form=form,
-						template="form-template",
-						title="Create Ad Form"
-					)
+					remaining = len(form['city'].data)
+					for city in form['city'].data:
+						ad_data = [
+							datetime.now().strftime("%c"),
+							form['language'].data,
+							file_type,
+							form['adcopy'].data,
+							form['adtitle'].data,
+							form['calltoaction'].data,
+							start_date,
+							end_date,
+							form['creativetype'].data,
+							form['creativeconcept'].data,
+							form['adname'].data,
+							mediasize,
+							video_length,
+							media_url,
+							form['country'].data,
+							city,
+							form['objective'].data, # UA or R&F or both
+						]
+						logging.warning("attempting a write into sheets")
+						write_status = write_into_sheet(ad_data)
+						remaining -= 1
+						logging.warning("written into sheet, hopefully")
+						if write_status != 'ok':
+							return render_template(
+							"adcreation.jinja2",
+							form=form,
+							template="form-template",
+							title="Create Ad Form"
+						)
+						elif write_status == 'ok' and remaining == 0:
+							return redirect(url_for("success"))
 			else:
 				logging.warning('something bad happened.')
 				return render_template(

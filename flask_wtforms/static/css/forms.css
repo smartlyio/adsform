@@ -65,16 +65,6 @@ select {
   -webkit-appearance: none;
 }
 
-select::after {
-  content: "hello";
-  width: 0;
-  height: 0;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  display: block;
-  border-top: 20px solid #f00;
-}
-
 input[type="text"]::placeholder {
   color: #d4d9e3;
 }

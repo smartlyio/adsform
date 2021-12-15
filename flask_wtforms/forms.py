@@ -2,15 +2,15 @@
 from datetime import date
 from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import (
-    PasswordField,
     SelectField,
+    SelectMultipleField,
     StringField,
     SubmitField,
     TextAreaField,
+    MultipleFileField
 )
-from wtforms.fields.html5 import DateField
+from wtforms.fields import DateField
 from flask_wtf.file import FileField, FileRequired
-from wtforms import MultipleFileField
 from wtforms.validators import URL, DataRequired, Email, EqualTo, Length
 import json
 
@@ -18,10 +18,12 @@ class AdForm(FlaskForm):
     with open('countries_cities.json') as fp:
         data = json.load(fp)
         keys = data.keys()
+        cities = data.values()
+
         countries = list(data)
         
         country = SelectField("Which country? 🌎", [DataRequired()], choices=countries)
-        city = SelectField("Which City to target? (first select country)", [DataRequired()], validate_choice=False)
+        city = SelectMultipleField("Which City to target? (first select country)", [DataRequired()], choices=[], validate_choice=False)
         language = SelectField("Which language?", [DataRequired()], choices=["AZ", "CS", "DA", "DE", "EL", "EN", "ET", "FI", "HE", "HR", "HU", "JA", "KA", "KK", "LT", "LV", "NO", "PL", "RU", "SK", "SL", "SR", "SV"])
         adtitle = StringField("Write the title of your ad:", [DataRequired()])
         adcopy = StringField("Write the copy of the ad:", [DataRequired()])
