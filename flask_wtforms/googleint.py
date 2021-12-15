@@ -147,5 +147,5 @@ def get_video_duration(filename):
 		video_time = str(datetime.timedelta(seconds=seconds))
 		return video_time
 	except Exception as e:
-		logging.warning("couldn't get video length for file {} with error {}").format(filename, str(e))
+		logging.warning("couldn't get video length for file {} with error {}".format(filename, str(e)))
 		return ""

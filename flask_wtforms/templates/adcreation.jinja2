@@ -24,6 +24,7 @@
               {% endfor %}
             </ul>
           {% endif %}
+        <p class="description">Tip: Press and hold ctrl or cmd to be able to click on multiple cities</p>
         </fieldset>
 
        <fieldset class="form-field">{{ form.city.label }} {{ form.city }}
@@ -158,10 +159,10 @@
           {% endif %}
         </fieldset>
         
-        <fieldset class="form-field">{{ form.attachment.label }} {{ form.attachment }}
-            {% if form.attachment.errors %}
+        <fieldset class="form-field">{{ form.attachments.label }} {{ form.attachments }}
+            {% if form.attachments.errors %}
               <ul class="errors">
-                {% for error in form.attachment.errors %}
+                {% for error in form.attachments.errors %}
                   <li class="error">
                       <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
                   </li>

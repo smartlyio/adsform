@@ -38,23 +38,22 @@ def createad():
 		form = AdForm(request.form)
 		logging.warning('starting createad')
 		if form.validate_on_submit():
-			att = request.files.getlist(form.attachment.name)
-			if att:
-				for madia_upload in att:
-					currentfile = att[0]
+			atts = request.files.getlist(form.attachments.name)
+			remaining_files = len(atts)
+			if atts:
+				for currentfile in atts:
 					filename = secure_filename(currentfile.filename)
-					media_contents = madia_upload.stream.read()
+					media_contents = currentfile.stream.read()
 					
 					# upload file to google drive
 					media_url = write_into_drive(media_contents, currentfile, filename)
-					logging.warning("written into google drive!")
+					logging.warning("google drive link:")
 					logging.warning(media_url)
 					file_type = "image" if (currentfile.mimetype == "image/jpeg" or currentfile.mimetype == "image/png" or currentfile.mimetype == "image/svg") else "video"
 					video_length = "na" if(file_type == "image" ) else get_video_duration(filename)
 					mediasize = get_image_size(filename) if(file_type == "image" ) else get_video_size(filename)
 					start_date = "" if (form['startdate'].data == date(1111,11,11)) else form['startdate'].data.strftime('%m/%d/%Y') #encountered what seems to be a bug in validation of empty values in wtforms
 					end_date = "" if (form['enddate'].data == date(1111,11,11)) else form['enddate'].data.strftime('%m/%d/%Y')
-					logging.warning('so far so good 1')
 					logging.warning("so far so good 1")
 					# remove from local temp file
 					if os.path.exists('temp/' + filename):
@@ -83,6 +82,7 @@ def createad():
 						logging.warning("attempting a write into sheets")
 						write_status = write_into_sheet(ad_data)
 						remaining -= 1
+						remaining_files -= 1
 						logging.warning("written into sheet, hopefully")
 						if write_status != 'ok':
 							return render_template(
@@ -91,7 +91,7 @@ def createad():
 							template="form-template",
 							title="Create Ad Form"
 						)
-						elif write_status == 'ok' and remaining == 0:
+						elif write_status == 'ok' and remaining == 0 and remaining_files == 0:
 							return redirect(url_for("success"))
 			else:
 				logging.warning('something bad happened.')

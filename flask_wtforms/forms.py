@@ -6,7 +6,6 @@ from wtforms import (
     SelectMultipleField,
     StringField,
     SubmitField,
-    TextAreaField,
     MultipleFileField
 )
 from wtforms.fields import DateField
@@ -34,7 +33,7 @@ class AdForm(FlaskForm):
         creativeconcept = StringField("Name of the creative concept?", [DataRequired()])
         adname = StringField("Name of the ad?", [DataRequired()])
         objective = SelectField("Would you like to run this ad in UA or R&F?", [DataRequired()], choices=["UA", "Reach & Frequency", "Both"])
-        attachment = FileField('Image/Video upload: (jpg, png, svg or mp4)')
+        attachments = MultipleFileField('Image/Video upload: (jpg, png, svg or mp4)')
         submit = SubmitField("Submit")
 
 
