@@ -21,8 +21,7 @@ def write_into_sheet(ad_data):
 		logging.warning("ran get credentials from service account")
 		gs = gspread.authorize(credentials)
 		logging.warning("authorized gspread!")
-		sh = gs.open_by_key("1gf6SCpqDZDxFSqeXyXjGwS0vPHgNQjTWYEm1WYeJPi4")
-		worksheet = sh.sheet1
+		worksheet = gs.open_by_key("1gf6SCpqDZDxFSqeXyXjGwS0vPHgNQjTWYEm1WYeJPi4").worksheet("Form")
 		next_row = next_available_row(worksheet)
 		logging.warning('next_available_row :')
 		logging.warning(next_row)
