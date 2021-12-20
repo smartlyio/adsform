@@ -112,6 +112,11 @@ button:hover {
   padding: 13px !important;
 }
 
+input[type="submit"]:focus,
+button:focus {     
+  background-color:#d7e6eb;
+}
+
 .success-wrapper {
   background: white;
   width: 350px;

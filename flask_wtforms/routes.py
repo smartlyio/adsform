@@ -58,7 +58,6 @@ def createad():
 					# remove from local temp file
 					if os.path.exists('temp/' + filename):
 						os.remove('temp/' + filename)
-					remaining = len(form['city'].data)
 					for city in form['city'].data:
 						ad_data = [
 							datetime.now().strftime("%c"),

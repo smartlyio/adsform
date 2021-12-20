@@ -25,4 +25,9 @@ $ . .venv/bin/activate
 $ flask run
 ``` 
 
+# Local debugging 
+run following command in terminal:
+
+export GOOGLE_APPLICATION_CREDENTIALS=<path to your service account credentials json-file>
+
 
