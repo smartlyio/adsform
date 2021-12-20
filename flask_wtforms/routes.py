@@ -39,7 +39,7 @@ def createad():
 		logging.warning('starting createad')
 		if form.validate_on_submit():
 			atts = request.files.getlist(form.attachments.name)
-			remaining_files = len(atts)
+			ad_count = len(atts) * len(form['city'].data) # number of ad rows that should be populated = selected file count * selected city count
 			if atts:
 				for currentfile in atts:
 					filename = secure_filename(currentfile.filename)
@@ -81,8 +81,7 @@ def createad():
 						]
 						logging.warning("attempting a write into sheets")
 						write_status = write_into_sheet(ad_data)
-						remaining -= 1
-						remaining_files -= 1
+						ad_count -= 1
 						logging.warning("written into sheet, hopefully")
 						if write_status != 'ok':
 							return render_template(
@@ -91,7 +90,7 @@ def createad():
 							template="form-template",
 							title="Create Ad Form"
 						)
-						elif write_status == 'ok' and remaining == 0 and remaining_files == 0:
+						elif write_status == 'ok' and ad_count == 0:
 							return redirect(url_for("success"))
 			else:
 				logging.warning('something bad happened.')
