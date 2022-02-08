@@ -75,7 +75,7 @@ def createad():
 							video_length,
 							media_url,
 							form['country'].data,
-							city,
+							city.capitalize(),
 							form['objective'].data, # UA or R&F or both
 						]
 						logging.warning("attempting a write into sheets")
