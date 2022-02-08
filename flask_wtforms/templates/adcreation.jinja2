@@ -27,6 +27,7 @@
         </fieldset>
 
        <p class="description">Hold Ctrl (Windows) or Cmd (Mac) for multiple selections</p>
+       <p class="description">tip: You can hold down command (or Ctrl) to select all cities, then deselect the ones you don't want to target.</p>
        <fieldset class="form-field">{{ form.city.label }} {{ form.city }}
           {% if form.country.errors %}
             <ul class="errors">
@@ -203,12 +204,6 @@
         function updateCities(cityList) {
           $('#city').empty();
           // console.log(cityList);
-          $('#city').append(
-            $('<option>', {
-                value: 'all',
-                text: 'all'
-            })
-          );
           cityList.forEach(function(cityItem) {
               $('#city').append(
                   $('<option>', {
