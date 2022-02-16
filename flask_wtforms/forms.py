@@ -30,7 +30,7 @@ class AdForm(FlaskForm):
         calltoaction = SelectField("Select a call to action: *", [DataRequired()], choices=["SHOP_NOW", "LEARN_MORE", "DOWNLOAD", "BUY_NOW", "ORDER_NOW", "ADD_TO_CART", "SEE_MORE"])
         startdate = DateField("Start Date *",[DataRequired()], format='%Y-%m-%d', default=date.today())
         enddate = DateField("End Date *", [DataRequired()], format='%Y-%m-%d', default=date.today())
-        creativetype = SelectField("What kind of creative is it? *", [DataRequired()], choices=["local", "local-restaurants", "localretail", "local-partnership", "incentive-wolt", "incentive-partnership"])
+        creativetype = SelectField("What kind of creative is it? *", [DataRequired()], choices=["local", "local-restaurants", "localretail", "local-partnership", "incentive-wolt", "incentive-partnership", "localretail-WM"])
         creativeconcept = StringField("Name of the creative concept? *", [Regexp('^\w+$', message="Concept must contain only letters numbers or underscore"), Length(max=25, message="Concept must be betwen 2 & 25 characters"), DataRequired()])
         adname = StringField("Name of the ad? *",[Regexp('^\w+$', message="Ad name must contain only letters numbers or underscore"), Length(max=25, message="Ad name must be betwen 2 & 25 characters"), DataRequired()])
         objective = SelectField("Would you like to run this ad for New users / Existing Users  or both? *", [DataRequired()], choices=["New Users", "Existing Users", "Both"])
