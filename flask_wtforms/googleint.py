@@ -14,6 +14,8 @@ from google.oauth2.service_account import Credentials
 from google.cloud import secretmanager
 import datetime
 
+vertical_dimensions = ['1920', '1620', '1350']
+
 
 def write_into_sheet(ad_data):
 	try:
@@ -117,10 +119,20 @@ def get_image_size(filename):
 	try:
 		im = Image.open("temp/"+filename)
 		w, h = im.size
-		return ("{}x{}").format(w,h)
+		return (w,h)
 	except Exception as e:
 		logging.warning("couldn't get media size for image {} with error {}".format(filename, str(e)))
 		return ""
+
+def get_image_size_name(width, height):
+	try: 
+		if (width == height):
+			return "square"
+		elif (width == '1080' and height in vertical_dimensions):
+			return 'vertical'
+	except Exception as e:
+		logging.warning("Couldn't decide a ratio name for dimensions {}x{} with error {}, falling back to square".format(width, height, str(e)))
+		return "square"
 
 def get_video_size(filename):
 	try:

@@ -51,7 +51,9 @@ def createad():
 					logging.warning(media_url)
 					file_type = "image" if (currentfile.mimetype == "image/jpeg" or currentfile.mimetype == "image/png" or currentfile.mimetype == "image/svg") else "video"
 					video_length = "na" if(file_type == "image" ) else get_video_duration(filename)
-					mediasize = get_image_size(filename) if(file_type == "image" ) else get_video_size(filename)
+					width,height = get_image_size(filename) if(file_type == "image" ) else get_video_size(filename)
+					mediasize = ("{}x{}").format(width, height)
+					mediasizename = get_image_size_name(width, height)
 					start_date = "" if (form['startdate'].data == date(1111,11,11)) else form['startdate'].data.strftime('%m/%d/%Y') #encountered what seems to be a bug in validation of empty values in wtforms
 					end_date = "" if (form['enddate'].data == date(1111,11,11)) else form['enddate'].data.strftime('%m/%d/%Y')
 					logging.warning("so far so good 1")
@@ -72,6 +74,7 @@ def createad():
 							form['creativeconcept'].data,
 							form['adname'].data,
 							mediasize,
+							mediasizename,
 							video_length,
 							media_url,
 							form['country'].data,

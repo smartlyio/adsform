@@ -6,7 +6,8 @@ from wtforms import (
     SelectMultipleField,
     StringField,
     SubmitField,
-    MultipleFileField
+    MultipleFileField,
+    TextAreaField
 )
 from wtforms.fields import DateField
 from flask_wtf.file import FileRequired
@@ -23,10 +24,10 @@ class AdForm(FlaskForm):
         countries = list(data)
         
         country = SelectField("Which country?🌎 *", [DataRequired()], choices=countries)
-        city = SelectMultipleField("Which City to target? (first select country) *", [DataRequired()], choices=[], validate_choice=False)
+        city = SelectMultipleField("Which City to target? (first select country) *", choices=[], validate_choice=False)
         language = SelectField("Which language? *", [DataRequired()], choices=["AZ", "CS", "DA", "DE", "EL", "EN", "ET", "FI", "HE", "HR", "HU", "JA", "KA", "KK", "LT", "LV", "NO", "PL", "RU", "SK", "SL", "SR", "SV"])
         adtitle = StringField("Write the title of your ad: *", [Length(max=25, message="Ad title must be betwen 2 & 25 characters"), DataRequired()])
-        adcopy = StringField("Write the copy of the ad: *", [Length(max=125, message="Ad copy must be betwen 2 & 125 characters"), DataRequired()])
+        adcopy = TextAreaField("Write the copy of the ad: *", [Length(max=125, message="Ad copy must be betwen 2 & 125 characters"), DataRequired()])
         calltoaction = SelectField("Select a call to action: *", [DataRequired()], choices=["SHOP_NOW", "LEARN_MORE", "DOWNLOAD", "BUY_NOW", "ORDER_NOW", "ADD_TO_CART", "SEE_MORE"])
         startdate = DateField("Start Date *",[DataRequired()], format='%Y-%m-%d', default=date.today())
         enddate = DateField("End Date *", [DataRequired()], format='%Y-%m-%d', default=date.today())
