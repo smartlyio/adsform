@@ -7,11 +7,12 @@ from wtforms import (
     StringField,
     SubmitField,
     MultipleFileField,
-    TextAreaField
+    TextAreaField,
+    URLField
 )
 from wtforms.fields import DateField
 from flask_wtf.file import FileRequired
-from wtforms.validators import DataRequired, Length, Regexp
+from wtforms.validators import DataRequired, Length, Regexp, url
 import json
 
 
@@ -24,7 +25,7 @@ class AdForm(FlaskForm):
         countries = list(data)
         
         country = SelectField("Which country?🌎 *", [DataRequired()], choices=countries)
-        city = SelectMultipleField("Which City to target? (first select country) *", choices=[], validate_choice=False)
+        city = SelectMultipleField("Which City to target? (first select country) *",  [DataRequired()], choices=[], validate_choice=False)
         language = SelectField("Which language? *", [DataRequired()], choices=["AZ", "CS", "DA", "DE", "EL", "EN", "ET", "FI", "HE", "HR", "HU", "JA", "KA", "KK", "LT", "LV", "NO", "PL", "RU", "SK", "SL", "SR", "SV"])
         adtitle = StringField("Write the title of your ad: *", [Length(max=25, message="Ad title must be betwen 2 & 25 characters"), DataRequired()])
         adcopy = TextAreaField("Write the copy of the ad: *", [Length(max=125, message="Ad copy must be betwen 2 & 125 characters"), DataRequired()])
@@ -35,6 +36,7 @@ class AdForm(FlaskForm):
         creativeconcept = StringField("Name of the creative concept? *", [Regexp('^\w+$', message="Concept must contain only letters numbers or underscore"), Length(max=25, message="Concept must be betwen 2 & 25 characters"), DataRequired()])
         adname = StringField("Name of the ad? *",[Regexp('^\w+$', message="Ad name must contain only letters numbers or underscore"), Length(max=25, message="Ad name must be betwen 2 & 25 characters"), DataRequired()])
         objective = SelectField("Would you like to run this ad for New users / Existing Users  or both? *", [DataRequired()], choices=["New Users", "Existing Users", "Both"])
+        link = URLField("Link", validators=[url()])
         attachments = MultipleFileField('Image/Video upload: (jpg, png, svg or mp4) *')
         submit = SubmitField("Submit")
 

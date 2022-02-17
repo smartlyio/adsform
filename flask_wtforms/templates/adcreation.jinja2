@@ -166,6 +166,19 @@
           {% endif %}
         </fieldset>
         
+        <p class="description">Link for redirection on the ad. Can be a deeplink or a regular link. Leave empty if you do not need this.</p>
+        <fieldset class="form-field">{{ form.link.label }} {{ form.link }}
+          {% if form.link.errors %}
+            <ul class="errors">
+              {% for error in form.link.errors %}
+                <li class="error">
+                    <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </fieldset>
+        
         <p class="description">You can upload multiple files at once. Accepted format: jpg, png, svg, mp4</p>
         <fieldset class="form-field">{{ form.attachments.label }} {{ form.attachments }}
             {% if form.attachments.errors %}

@@ -77,6 +77,7 @@ def createad():
 							mediasizename,
 							video_length,
 							media_url,
+							form['link'].data,
 							form['country'].data,
 							city.capitalize(),
 							form['objective'].data, # UA or R&F or both
