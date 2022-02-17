@@ -36,7 +36,7 @@ class AdForm(FlaskForm):
         creativeconcept = StringField("Name of the creative concept? *", [Regexp('^\w+$', message="Concept must contain only letters numbers or underscore"), Length(max=25, message="Concept must be betwen 2 & 25 characters"), DataRequired()])
         adname = StringField("Name of the ad? *",[Regexp('^\w+$', message="Ad name must contain only letters numbers or underscore"), Length(max=25, message="Ad name must be betwen 2 & 25 characters"), DataRequired()])
         objective = SelectField("Would you like to run this ad for New users / Existing Users  or both? *", [DataRequired()], choices=["New Users", "Existing Users", "Both"])
-        link = URLField("Link", validators=[url()])
+        link = URLField("Link", validators=[url()], default="https://wolt.onelink.me/Uy67/137fe79b")
         attachments = MultipleFileField('Image/Video upload: (jpg, png, svg or mp4) *')
         submit = SubmitField("Submit")
 
