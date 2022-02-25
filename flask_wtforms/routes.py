@@ -39,7 +39,8 @@ def createad():
 		logging.warning('starting createad')
 		if form.validate_on_submit():
 			atts = request.files.getlist(form.attachments.name)
-			ad_count = len(atts) * len(form['city'].data) # number of ad rows that should be populated = selected file count * selected city count
+			cities = form['city'].data
+			ad_count = len(atts) * len(cities) # number of ad rows that should be populated = selected file count * selected city count
 			if atts:
 				for currentfile in atts:
 					filename = secure_filename(currentfile.filename)
@@ -60,7 +61,8 @@ def createad():
 					# remove from local temp file
 					if os.path.exists('temp/' + filename):
 						os.remove('temp/' + filename)
-					for city in form['city'].data:
+					data_to_write = []
+					for city in cities:
 						ad_data = [
 							datetime.now().strftime("%c"),
 							form['language'].data,
@@ -83,18 +85,20 @@ def createad():
 							form['objective'].data, # UA or R&F or both
 						]
 						logging.warning("attempting a write into sheets")
-						write_status = write_into_sheet(ad_data)
+						data_to_write.append(ad_data)
 						ad_count -= 1
-						logging.warning("written into sheet, hopefully")
-						if write_status != 'ok':
-							return render_template(
-							"adcreation.jinja2",
-							form=form,
-							template="form-template",
-							title="Create Ad Form"
-						)
-						elif write_status == 'ok' and ad_count == 0:
-							return redirect(url_for("success"))
+						
+						if ad_count == 0:
+							write_status = write_into_sheet(data_to_write)
+							if write_status != 'ok':
+								return render_template(
+								"adcreation.jinja2",
+								form=form,
+								template="form-template",
+								title="Create Ad Form"
+								)
+							elif write_status == 'ok' and ad_count == 0:
+								return redirect(url_for("success"))
 			else:
 				logging.warning('something bad happened.')
 				return render_template(

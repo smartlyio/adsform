@@ -24,11 +24,12 @@ def write_into_sheet(ad_data):
 		gs = gspread.authorize(credentials)
 		logging.warning("authorized gspread!")
 		worksheet = gs.open_by_key("1gf6SCpqDZDxFSqeXyXjGwS0vPHgNQjTWYEm1WYeJPi4").worksheet("Form")
+		# test worksheet = gs.open_by_key("1fn0g53MbdpVRpkzaHEpWsjkN5_oHLepVmbh45veKhqI").worksheet("Form")
 		next_row = next_available_row(worksheet)
 		logging.warning('next_available_row :')
 		logging.warning(next_row)
 		row_to_begin = "A{}".format(next_row)
-		worksheet.update(row_to_begin, [ad_data])
+		worksheet.update(row_to_begin, ad_data)
 		return "ok"
 	except Exception as e:
 		logging.warning('An error occurred while writing to the sheet', e)
