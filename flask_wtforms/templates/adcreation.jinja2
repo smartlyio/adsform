@@ -166,7 +166,9 @@
           {% endif %}
         </fieldset>
         
-        <p class="description">Link for redirection on the ad. Can be a deeplink or a regular link. Leave empty if you do not need this.</p>
+        <p class="description">Link for redirection on the ad. Can be a deeplink or a regular link. 
+        Default value is : "https://wolt.onelink.me/Uy67/137fe79b"
+        Leave the link as is you do not need this, otherwise change with your own link.</p>
         <fieldset class="form-field">{{ form.link.label }} {{ form.link }}
           {% if form.link.errors %}
             <ul class="errors">

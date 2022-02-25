@@ -14,7 +14,7 @@ from google.oauth2.service_account import Credentials
 from google.cloud import secretmanager
 import datetime
 
-vertical_dimensions = ['1920', '1620', '1350']
+vertical_dimensions = [1920, 1620, 1350]
 
 
 def write_into_sheet(ad_data):
@@ -128,7 +128,7 @@ def get_image_size_name(width, height):
 	try: 
 		if (width == height):
 			return "square"
-		elif (width == '1080' and height in vertical_dimensions):
+		elif (width == 1080 and height in vertical_dimensions):
 			return 'vertical'
 	except Exception as e:
 		logging.warning("Couldn't decide a ratio name for dimensions {}x{} with error {}, falling back to square".format(width, height, str(e)))
