@@ -166,13 +166,23 @@
           {% endif %}
         </fieldset>
         
-        <p class="description">Link for redirection on the ad. Can be a deeplink or a regular link. 
-        Default value is : "https://wolt.onelink.me/Uy67/137fe79b"
-        Leave the link as is you do not need this, otherwise change with your own link.</p>
-        <fieldset class="form-field">{{ form.link.label }} {{ form.link }}
-          {% if form.link.errors %}
+        <p class="description">Would you like to redirect existing users into a different part of the app? if YES! Please add the following information.
+        (If answer is NO please leave this files empty)</p>
+        <fieldset class="form-field">{{ form.weblink.label }} {{ form.weblink }}
+          {% if form.weblink.errors %}
             <ul class="errors">
-              {% for error in form.link.errors %}
+              {% for error in form.weblink.errors %}
+                <li class="error">
+                    <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </fieldset>
+        <fieldset class="form-field">{{ form.mobilelink.label }} {{ form.mobilelink }}
+          {% if form.mobilelink.errors %}
+            <ul class="errors">
+              {% for error in form.mobilelink.errors %}
                 <li class="error">
                     <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
                 </li>

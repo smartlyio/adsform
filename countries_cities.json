@@ -25,12 +25,14 @@
         "tbilisi"
     ],
     "HRV": [
+        "karlovac",
         "osijek",
         "pula",
         "rijeka",
         "samobor",
         "slavonski brod",
         "split",
+        "Šibenik",
         "varaždin",
         "velika gorica",
         "zadar",
@@ -95,7 +97,8 @@
         "ostrava",
         "pardubice",
         "pilsen",
-        "prague"
+        "prague",
+        "Ústí"
     ],
     "JPN": [
         "akita",
