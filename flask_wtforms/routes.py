@@ -39,7 +39,8 @@ def createad():
 		logging.warning('starting createad')
 		if form.validate_on_submit():
 			atts = request.files.getlist(form.attachments.name)
-			ad_count = len(atts) * len(form['city'].data) # number of ad rows that should be populated = selected file count * selected city count
+			cities = form['city'].data
+			ad_count = len(atts) * len(cities) # number of ad rows that should be populated = selected file count * selected city count
 			if atts:
 				for currentfile in atts:
 					filename = secure_filename(currentfile.filename)
@@ -51,14 +52,17 @@ def createad():
 					logging.warning(media_url)
 					file_type = "image" if (currentfile.mimetype == "image/jpeg" or currentfile.mimetype == "image/png" or currentfile.mimetype == "image/svg") else "video"
 					video_length = "na" if(file_type == "image" ) else get_video_duration(filename)
-					mediasize = get_image_size(filename) if(file_type == "image" ) else get_video_size(filename)
+					width,height = get_image_size(filename) if(file_type == "image" ) else get_video_size(filename)
+					mediasize = ("{}x{}").format(width, height)
+					mediasizename = get_image_size_name(width, height)
 					start_date = "" if (form['startdate'].data == date(1111,11,11)) else form['startdate'].data.strftime('%m/%d/%Y') #encountered what seems to be a bug in validation of empty values in wtforms
 					end_date = "" if (form['enddate'].data == date(1111,11,11)) else form['enddate'].data.strftime('%m/%d/%Y')
 					logging.warning("so far so good 1")
 					# remove from local temp file
 					if os.path.exists('temp/' + filename):
 						os.remove('temp/' + filename)
-					for city in form['city'].data:
+					data_to_write = []
+					for city in cities:
 						ad_data = [
 							datetime.now().strftime("%c"),
 							form['language'].data,
@@ -72,25 +76,30 @@ def createad():
 							form['creativeconcept'].data,
 							form['adname'].data,
 							mediasize,
+							mediasizename,
 							video_length,
 							media_url,
+							form['weblink'].data,
+							form['mobilelink'].data,
 							form['country'].data,
-							city,
+							city.capitalize(),
 							form['objective'].data, # UA or R&F or both
 						]
 						logging.warning("attempting a write into sheets")
-						write_status = write_into_sheet(ad_data)
+						data_to_write.append(ad_data)
 						ad_count -= 1
-						logging.warning("written into sheet, hopefully")
-						if write_status != 'ok':
-							return render_template(
-							"adcreation.jinja2",
-							form=form,
-							template="form-template",
-							title="Create Ad Form"
-						)
-						elif write_status == 'ok' and ad_count == 0:
-							return redirect(url_for("success"))
+						
+						if ad_count == 0:
+							write_status = write_into_sheet(data_to_write)
+							if write_status != 'ok':
+								return render_template(
+								"adcreation.jinja2",
+								form=form,
+								template="form-template",
+								title="Create Ad Form"
+								)
+							elif write_status == 'ok' and ad_count == 0:
+								return redirect(url_for("success"))
 			else:
 				logging.warning('something bad happened.')
 				return render_template(

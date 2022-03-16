@@ -27,6 +27,7 @@
         </fieldset>
 
        <p class="description">Hold Ctrl (Windows) or Cmd (Mac) for multiple selections</p>
+       <p class="description">tip: You can hold down command (or Ctrl) to select all cities, then deselect the ones you don't want to target.</p>
        <fieldset class="form-field">{{ form.city.label }} {{ form.city }}
           {% if form.country.errors %}
             <ul class="errors">
@@ -140,6 +141,7 @@
           {% endif %}
         </fieldset>
 
+        <p class="description">Further identifier for this specific image/video/ad, for example number or variation - or you can leave this empty. DO NOT use spaces or underscores, write everything as one word/number.</p>
         <fieldset class="form-field">{{ form.adname.label }} {{ form.adname(size=50) }}
           {% if form.adname.errors %}
             <ul class="errors">
@@ -156,6 +158,31 @@
           {% if form.objective.errors %}
             <ul class="errors">
               {% for error in form.objective.errors %}
+                <li class="error">
+                    <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </fieldset>
+        
+        <p class="description">Would you like to redirect existing users into a different part of the app? if YES! Please add the following information.
+        (If answer is NO please leave this files empty)</p>
+        <fieldset class="form-field">{{ form.weblink.label }} {{ form.weblink }}
+          {% if form.weblink.errors %}
+            <ul class="errors">
+              {% for error in form.weblink.errors %}
+                <li class="error">
+                    <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </fieldset>
+        <fieldset class="form-field">{{ form.mobilelink.label }} {{ form.mobilelink }}
+          {% if form.mobilelink.errors %}
+            <ul class="errors">
+              {% for error in form.mobilelink.errors %}
                 <li class="error">
                     <i class="fas fa-exclamation"></i> <span class="error-message">{{ error }}</span>
                 </li>
@@ -202,12 +229,6 @@
         function updateCities(cityList) {
           $('#city').empty();
           // console.log(cityList);
-          $('#city').append(
-            $('<option>', {
-                value: 'all',
-                text: 'all'
-            })
-          );
           cityList.forEach(function(cityItem) {
               $('#city').append(
                   $('<option>', {
