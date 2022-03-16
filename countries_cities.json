@@ -25,6 +25,8 @@
         "tbilisi"
     ],
     "HRV": [
+        "Bjelovar",
+        "Čakovec",
         "karlovac",
         "osijek",
         "pula",
@@ -98,7 +100,7 @@
         "pardubice",
         "pilsen",
         "prague",
-        "Ústí"
+        "Ústí nad labem"
     ],
     "JPN": [
         "akita",
@@ -290,8 +292,10 @@
         "kranj",
         "ljubljana",
         "maribor",
+        "Nova Gorica",
         "novo mesto",
-        "ptuj"
+        "ptuj",
+        "Velenje"
     ],
     "CYP": [
         "ammochostos",
