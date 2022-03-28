@@ -42,6 +42,7 @@ def createad():
 			cities = form['city'].data
 			ad_count = len(atts) * len(cities) # number of ad rows that should be populated = selected file count * selected city count
 			if atts:
+				data_to_write = []
 				for currentfile in atts:
 					filename = secure_filename(currentfile.filename)
 					media_contents = currentfile.stream.read()
@@ -61,7 +62,6 @@ def createad():
 					# remove from local temp file
 					if os.path.exists('temp/' + filename):
 						os.remove('temp/' + filename)
-					data_to_write = []
 					for city in cities:
 						ad_data = [
 							datetime.now().strftime("%c"),
