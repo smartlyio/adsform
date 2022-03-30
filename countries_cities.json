@@ -149,6 +149,7 @@
         "frankfurt",
         "hamburg",
         "hanover",
+        "leipzig",
         "munich"
     ],
     "NOR": [
@@ -156,6 +157,7 @@
         "lillestrøm",
         "oslo",
         "sandnes",
+        "sandvika",
         "stavanger",
         "tromsø",
         "trondheim"
@@ -194,7 +196,8 @@
         "odense",
         "randers",
         "roskilde",
-        "vejle"
+        "vejle",
+        "vestegnen"
     ],
     "HUN": [
         "békéscsaba",
@@ -225,6 +228,7 @@
         "borås",
         "eskilstuna",
         "gävle",
+        "göteborg",
         "halmstad",
         "karlstad",
         "linköping",
@@ -249,12 +253,14 @@
     "SVK": [
         "banska bystrica",
         "bratislava",
+        "bojnice",
         "kosice",
         "liptovsky mikulas",
         "martin",
         "nitra",
         "poprad",
         "presov",
+        "Prievidza",
         "trencin",
         "trnava",
         "žilina",
@@ -263,6 +269,7 @@
     "ISR": [
         "ashdod",
         "beer sheva",
+        "hadera",
         "hasharon",
         "herzliya - ramat hasharon",
         "jerusalem",
@@ -292,10 +299,10 @@
         "kranj",
         "ljubljana",
         "maribor",
-        "Nova Gorica",
+        "nova Gorica",
         "novo mesto",
         "ptuj",
-        "Velenje"
+        "velenje"
     ],
     "CYP": [
         "ammochostos",
