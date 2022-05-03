@@ -7,7 +7,7 @@ from datetime import datetime, date
 from werkzeug.utils import secure_filename
 import logging
 import json
-
+import requests
 
 @app.route("/")
 def home():
@@ -23,6 +23,7 @@ def pick_county():
 	try:
 		countryId = request.args.get('countryId', "DEU", type=str)
 		if countryId != '':
+		# if the map is empty fallback to reading from file.	
 			with open('countries_cities.json') as fp:
 				data = json.load(fp)
 			return jsonify(result=data[countryId])

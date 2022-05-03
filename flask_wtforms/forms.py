@@ -13,16 +13,12 @@ from wtforms import (
 from wtforms.fields import DateField
 from flask_wtf.file import FileRequired
 from wtforms.validators import DataRequired, Length, Regexp, url
-import json
+from .countries import get_all_countries
 
 
 class AdForm(FlaskForm):
     with open('countries_cities.json') as fp:
-        data = json.load(fp)
-        keys = data.keys()
-        cities = data.values()
-
-        countries = list(data)
+        countries = get_all_countries()
         
         country = SelectField("Which country?🌎 *", [DataRequired()], choices=countries)
         city = SelectMultipleField("Which City to target? (first select country) *",  [DataRequired()], choices=[], validate_choice=False)
