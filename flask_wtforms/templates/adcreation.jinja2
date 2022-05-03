@@ -218,17 +218,22 @@
 {% block javascript %}
     <script type="text/javascript" >
       $(function() {
-
 			  $("#country").change(function() {
-			    $.getJSON('/getcities?countryId=' + $("#country").val(), function(data) {
-            updateCities(data.result);
-			    });
-			  });
+          var call = $.ajax({
+            'dataType': "json",
+            'url': '/getcountrycities',
+            'data': {country: $("#country").val()},
+          });
+
+          // Listening to completion
+          call.done(function(data){
+            updateCities(data.sort());
+          });
+        }); 
 
         // updates with citylist + 'all' option on top as text
-        function updateCities(cityList) {
+       function updateCities(cityList) {
           $('#city').empty();
-          // console.log(cityList);
           cityList.forEach(function(cityItem) {
               $('#city').append(
                   $('<option>', {
@@ -238,6 +243,6 @@
               );
           });
         }
-      });
+        });
     </script>
 {% endblock %}
