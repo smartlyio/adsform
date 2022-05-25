@@ -8,7 +8,7 @@ pydrive
 gevent==21.8.0
 google-api-core==1.26.1
 google-auth==1.27.1
-google-cloud-core==1.6.0
+google-cloud-core==1.7.2
 google-cloud-secret-manager==2.7.2
 google-crc32c==1.1.2
 google-resumable-media==1.2.0
